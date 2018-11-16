@@ -48,6 +48,18 @@ func AddAlarm(alarm model.Alarm) (int64, error) {
 	// int64 to string
 	id := strconv.FormatInt(incrId, 10)
 	alarm.Id = incrId
+	account := alarm.Account
+
+	// 为新增的添加设备信息
+	if list, err := ListAlarm(account); err == nil {
+		if list != nil && len(list) > 0 {
+			alarm.DeviceId = list[0].DeviceId
+			alarm.DeviceOS = list[0].DeviceOS
+			alarm.DeviceCountry = list[0].DeviceCountry
+			alarm.DeviceLang = list[0].DeviceLang
+			alarm.AppKey = list[0].AppKey
+		}
+	}
 	alarmMap := util.Struct2Map(alarm)
 
 	client, cerr := GetClient()

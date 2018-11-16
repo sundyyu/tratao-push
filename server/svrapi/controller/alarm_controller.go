@@ -133,8 +133,7 @@ func (this *AlarmController) UpdateDevice() {
 }
 
 func (this *AlarmController) ListAlarm() {
-	reqBody := this.Ctx.Input.RequestBody
-	account := gjson.GetBytes(reqBody, "account").String()
+	account := this.Ctx.Input.Param(":account")
 
 	alarms, err := redis.ListAlarm(account)
 	if err != nil {

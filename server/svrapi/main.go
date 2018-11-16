@@ -33,9 +33,9 @@ func main() {
 	beego.BConfig.CopyRequestBody = true
 
 	beego.Router(rootPath+"/add", &controller.AlarmController{}, "post:AddAlarm")
-	beego.Router(rootPath+"/update", &controller.AlarmController{}, "post:UpdateAlarm")
-	beego.Router(rootPath+"/list", &controller.AlarmController{}, "post:ListAlarm")
-	beego.Router(rootPath+"/del", &controller.AlarmController{}, "post:DelAlarm")
-	beego.Router(rootPath+"/updatedev", &controller.AlarmController{}, "post:UpdateDevice")
+	beego.Router(rootPath+"/update", &controller.AlarmController{}, "put:UpdateAlarm")
+	beego.Router(rootPath+"/list/:account", &controller.AlarmController{}, "get:ListAlarm")
+	beego.Router(rootPath+"/del", &controller.AlarmController{}, "delete:DelAlarm")
+	beego.Router(rootPath+"/updatedev", &controller.AlarmController{}, "put:UpdateDevice")
 	beego.Run()
 }
