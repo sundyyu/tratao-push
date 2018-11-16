@@ -1,0 +1,58 @@
+node:
+  id: gate-1                  # unique id of this server
+  addr: 192.168.1.104:9901    # rpc address
+  rpcTimeout: 3000            # in milliseconds
+
+zookeeper:
+  addrs: [192.168.1.104:2181]  # server address list
+  timeout: 10000               # session timeout, in milliseconds
+
+log:
+#  cfgFile: gate-log.xml   # xml configuration file
+
+redis:
+  addr: 192.168.1.104:6379    # server address
+  maxConn: 5                  # max number connections in pool
+  password: tratao            # password
+  database:                   # default value is 0
+
+rabbitmq:
+  ip: 192.168.1.104       # server ip
+  port: 5672              # server port
+  user: tratao            # user
+  password: tratao        # password
+
+check:
+  pipeExecCount: 5000     # pipeline 每次最大查询数量
+  maxSend: 20             #最大发送线程数
+  maxReceive: 10          #最大接收线程数
+  alarmTickTime: 15       #预警定时器时间（秒）
+  exrateTickTime: 60      #汇率定时器时间（秒）
+
+http:
+  rootPath: "/api/alarm"
+  listenAddr: 8080       # API服务器端口
+
+xiaomi:
+  appSecret: "Yh5kSrxQOhhgXttyEgBpow=="              #小米appSecret
+  appPkgName: "com.example.traveltao.xcpushdemo"     #小米app包名
+
+meizu:
+  appId: "115226"                                    #魅族appId
+  appSecret: "6a47ac956c3b44648bac55e0b350e3c9"      #魅族appSecret
+
+huawei:
+  appId: "100384977"                                 #华为appId
+  appSecret: "976b53ce5707fff89181f6412418102d"      #华为appSecret
+  appPkgName: "com.example.traveltao.xcpushdemo"     #华为app包名
+
+ios:
+  cerPath: "/Users/traveltao/Documents/notification.p12"  #IOS证书
+  cerPass: "123456"                                       #IOS证书密码
+
+fcm:
+  cfgPath: "/Users/traveltao/tratao-9bdd1-firebase-adminsdk-ay1zj-cc9ada5246.json" #谷歌秘钥
+
+test:
+  alived: true
+  percent: 34.55
