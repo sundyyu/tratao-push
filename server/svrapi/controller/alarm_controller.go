@@ -151,8 +151,8 @@ func (this *AlarmController) ListAlarm() {
 
 func (this *AlarmController) DelAlarm() {
 	reqBody := this.Ctx.Input.RequestBody
-
 	idArr := gjson.GetBytes(reqBody, "id")
+
 	if !idArr.IsArray() {
 		util.LogError("[alarm_controller.go DelAlarm] fail, id: ", idArr, "id is not a array.")
 
