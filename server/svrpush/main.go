@@ -25,17 +25,26 @@ func main() {
 		return
 	}
 
-	cfg := config.LoadConfig(path)
-	// cfg := config.NewConfig("../../config/cfg.yaml")
-	max := cfg.GetInt("check.maxReceive") // 并发执行线程数
-	receiveService := push.ReceiveService{}
-	receiveService.CallChan = make(chan int, max)
-
 	forever := make(chan int, 1)
+	cfg := config.LoadConfig(path)
+	max := cfg.GetInt("check.maxReceive") // 并发执行线程数
+	conn := rabbitmq.GetConn()
+	defer conn.Close()
 
-	// 监听推送的消息队列
-	rabbitmq.DoReceive(receiveService)
+	// 监听Alarm推送的消息队列
+	alarm := push.AlarmReceive{}
+	alarm.CallChan = make(chan int, max)
+	ch := rabbitmq.GetChannel(conn)
+	defer ch.Close()
+	rabbitmq.DoReceive(ch, alarm)
+
+	// 监听PushMsg推送的消息队列
+	queue := cfg.GetString("check.pushMsgQueue")
+	pushMsg := push.PushMsgReceive{}
+	pushMsg.CallChan = make(chan int, max)
+	pch := rabbitmq.GetChannelQueue(conn, queue)
+	defer pch.Close()
+	rabbitmq.DoReceiveQueue(pch, pushMsg, queue)
 
 	<-forever
-
 }

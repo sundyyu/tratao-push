@@ -28,12 +28,18 @@ func main() {
 
 	forever := make(chan int, 1)
 
+	// 汇率Check
 	var exrate check.Exrate = &check.ExrateYahoo{}
 	exrate.Update()
 	exrate.Loop()
 
-	userAlarm := &check.UserAlarm{UExrate: exrate}
-	userAlarm.Loop()
+	// 预警信息Check
+	var checkAlarm check.Check = &check.CheckAlarm{UExrate: exrate}
+	checkAlarm.Loop()
+
+	// 推送信息Check
+	var checkPushMsg check.Check = &check.CheckMessage{}
+	checkPushMsg.Loop()
 
 	<-forever
 }

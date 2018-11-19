@@ -23,4 +23,8 @@ func TestConfig2(t *testing.T) {
 
 	m := map[string]interface{}{"Ltt": t}
 	fmt.Println(m)
+
+	var str string
+	fmt.Println(str, len(str))
+
 }

@@ -1,7 +1,6 @@
 package push
 
 import (
-	"fmt"
 	"github.com/json-iterator/go"
 	"github.com/streadway/amqp"
 	"strconv"
@@ -16,11 +15,11 @@ import (
 	"tratao-push/util"
 )
 
-type ReceiveService struct {
+type AlarmReceive struct {
 	CallChan chan int
 }
 
-func (rs ReceiveService) Call(msg amqp.Delivery) {
+func (rs AlarmReceive) Call(msg amqp.Delivery) {
 	// 占用通道
 	rs.CallChan <- 1
 	// 线程中执行推送
@@ -52,7 +51,7 @@ func DoPush(msg amqp.Delivery, callChan chan int) {
 
 	p := strconv.FormatFloat(price, 'E', -1, 64)
 	body := "您关注的汇率[" + baseCur + "/" + targetCur + "] 当前值为：" + p + "," + " 已达到你设置的预警阈值。"
-	fmt.Println(alarm.Account + " for exrate [" + alarm.BaseCur + "/" + alarm.TargetCur + "], current price: " + p)
+	util.LogInfo("push alarm: ", alarm)
 
 	// 调用推送SDK进行消息推送
 	var pushSerice pushsdk.PushService

@@ -33,6 +33,10 @@ func GetConn() *amqp.Connection {
 var chLock *sync.Mutex = new(sync.Mutex)
 
 func GetChannel(conn *amqp.Connection) *amqp.Channel {
+	return GetChannelQueue(conn, ALARM_QUEUE)
+}
+
+func GetChannelQueue(conn *amqp.Connection, queue string) *amqp.Channel {
 	chLock.Lock()
 	defer chLock.Unlock()
 
@@ -46,17 +50,17 @@ func GetChannel(conn *amqp.Connection) *amqp.Channel {
 	}
 
 	// 消息队列
-	queue, err := ch.QueueDeclare(
-		"test_queue", // name
-		true,         // durable 持久化
-		false,        // delete when unused
-		false,        // exclusive
-		false,        // no-wait
-		nil,          // arguments
+	q, err := ch.QueueDeclare(
+		queue, // name
+		true,  // durable 持久化
+		false, // delete when unused
+		false, // exclusive
+		false, // no-wait
+		nil,   // arguments
 	)
 
 	if err != nil {
-		util.LogError(queue.Name, err)
+		util.LogError(q.Name, err)
 		return nil
 	}
 	return ch
@@ -94,28 +98,27 @@ func CloseConnArr(chanArr []*amqp.Connection) {
 	}
 }
 
-func DoSend(ch *amqp.Channel, body []byte, send chan int) {
-	if send != nil {
-		defer util.ReadChan(send)
-	}
+func DoSend(ch *amqp.Channel, body []byte) {
 	if ch == nil {
 		return
 	}
+	DoPublish(ch, body, ALARM_QUEUE)
+}
 
-	DoPublish(ch, body, nil)
+func DoSendQueue(ch *amqp.Channel, body []byte, queue string) {
+	if ch == nil {
+		return
+	}
+	DoPublish(ch, body, queue)
 }
 
 // 发布消息
-func DoPublish(ch *amqp.Channel, body []byte, pub chan int) {
-	if pub != nil {
-		defer util.ReadChan(pub)
-	}
-
+func DoPublish(ch *amqp.Channel, body []byte, queue string) {
 	err := ch.Publish(
-		"",           // exchange
-		"test_queue", // routing key
-		false,        // mandatory
-		false,        // immediate
+		"",    // exchange
+		queue, // routing key
+		false, // mandatory
+		false, // immediate
 		amqp.Publishing{
 			DeliveryMode: amqp.Persistent, // 持久化
 			ContentType:  "text/plain",

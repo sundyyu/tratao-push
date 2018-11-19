@@ -24,34 +24,37 @@ rabbitmq:
 
 check:
   pipeExecCount: 5000     # pipeline 每次最大查询数量
-  maxSend: 20             #最大发送线程数
-  maxReceive: 10          #最大接收线程数
-  alarmTickTime: 15       #预警定时器时间（秒）
-  exrateTickTime: 60      #汇率定时器时间（秒）
+  maxSend: 20             # 最大发送线程数
+  maxReceive: 10          # 最大接收线程数
+  alarmTickTime: 15       # 预警定时器时间（秒）
+  exrateTickTime: 60      # 汇率定时器时间（秒）
+  pushMsgTickTime: 10     # 推送消息定时器时间（秒）
+  pushMsgQueue: "msg_queue"
 
 http:
-  rootPath: "/api/alarm"
-  listenAddr: 8080       # API服务器端口
+  alarmPath: "/api/alarm"      # 预警信息根路径
+  pushMsgPath: "/api/pushmsg"  # 推送信息根路径
+  listenAddr: 8080             # API服务器端口
 
 xiaomi:
-  appSecret: "Yh5kSrxQOhhgXttyEgBpow=="              #小米appSecret
-  appPkgName: "com.example.traveltao.xcpushdemo"     #小米app包名
+  appSecret: "Yh5kSrxQOhhgXttyEgBpow=="              # 小米appSecret
+  appPkgName: "com.example.traveltao.xcpushdemo"     # 小米app包名
 
 meizu:
-  appId: "115226"                                    #魅族appId
-  appSecret: "6a47ac956c3b44648bac55e0b350e3c9"      #魅族appSecret
+  appId: "115226"                                    # 魅族appId
+  appSecret: "6a47ac956c3b44648bac55e0b350e3c9"      # 魅族appSecret
 
 huawei:
-  appId: "100384977"                                 #华为appId
-  appSecret: "976b53ce5707fff89181f6412418102d"      #华为appSecret
-  appPkgName: "com.example.traveltao.xcpushdemo"     #华为app包名
+  appId: "100384977"                                 # 华为appId
+  appSecret: "976b53ce5707fff89181f6412418102d"      # 华为appSecret
+  appPkgName: "com.example.traveltao.xcpushdemo"     # 华为app包名
 
 ios:
-  cerPath: "/Users/traveltao/Documents/notification.p12"  #IOS证书
-  cerPass: "123456"                                       #IOS证书密码
+  cerPath: "/Users/traveltao/Documents/notification.p12"  # IOS证书
+  cerPass: "123456"                                       # IOS证书密码
 
 fcm:
-  cfgPath: "/Users/traveltao/tratao-9bdd1-firebase-adminsdk-ay1zj-cc9ada5246.json" #谷歌秘钥
+  cfgPath: "/Users/traveltao/tratao-9bdd1-firebase-adminsdk-ay1zj-cc9ada5246.json" # google秘钥
 
 test:
   alived: true

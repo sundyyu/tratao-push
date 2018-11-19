@@ -19,8 +19,7 @@ const (
 )
 
 type ExrateYahoo struct {
-	StopChan chan int
-	Prices   map[string]float64
+	Prices map[string]float64
 }
 
 var lock sync.Mutex
@@ -63,7 +62,7 @@ func (yahoo *ExrateYahoo) GetPrice(baseCur string, targetCur string) (float64, e
 	}
 }
 
-func (yahoo *ExrateYahoo) Update() error {
+func (yahoo *ExrateYahoo) Update() {
 	defer func() {
 		if err := recover(); err != nil {
 			util.LogErrorM(err, "recover ExrateYahoo Update error.")
@@ -90,33 +89,12 @@ func (yahoo *ExrateYahoo) Update() error {
 		return true
 	})
 	util.LogInfoF("update exrate at %v\n", time.Now())
-
-	return nil
 }
 
 func (yahoo *ExrateYahoo) Loop() {
-	util.LogInfo("exrate loop start.")
+	util.LogInfo("yahoo exrate loop start.")
 
-	// cfg := config.NewConfig("../../config/cfg.yaml")
 	cfg := config.GetConfig()
 	t := cfg.GetInt("check.exrateTickTime") // 定时执行时间（秒）
-
-	yahoo.StopChan = make(chan int, 1)
-	ticker := time.NewTicker(time.Second * time.Duration(t))
-
-	go func() {
-		for {
-			select {
-			case <-yahoo.StopChan:
-				util.LogInfo("exrate loop stop.")
-				return
-			case <-ticker.C:
-				yahoo.Update()
-			}
-		}
-	}()
-}
-
-func (yahoo *ExrateYahoo) StopLoop() {
-	yahoo.StopChan <- 1
+	TickLoop(yahoo, t)
 }

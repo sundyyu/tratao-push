@@ -1,8 +1,7 @@
 package check
 
 type Exrate interface {
-	Loop
+	Check
 
-	Update() error
 	GetPrice(baseCur string, targetCur string) (float64, error)
 }

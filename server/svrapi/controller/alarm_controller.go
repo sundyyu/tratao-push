@@ -179,3 +179,36 @@ func (this *AlarmController) DelAlarm() {
 	this.Data["json"] = util.JsonResult(1, nil, "delete alarm success.")
 	this.ServeJSON()
 }
+
+func (this *AlarmController) AddPushMsg() {
+	msg := model.PushMsg{}
+	reqBody := this.Ctx.Input.RequestBody
+
+	// Account
+	account := gjson.GetBytes(reqBody, "account").String()
+	if len(account) == 0 {
+		errInfo := "[alarm_controller.go AddPushMsg] fail,  account can not be empty."
+		util.LogError(errInfo)
+
+		this.Data["json"] = util.JsonResult(0, nil, errInfo)
+		this.ServeJSON()
+		return
+	}
+	msg.Account = account
+	msg.DeviceId = gjson.GetBytes(reqBody, "token").String()
+	msg.Message = gjson.GetBytes(reqBody, "message").String()
+	msg.CreateTime = time.Now().Unix()
+
+	id, err := redis.AddPushMsg(msg)
+	if err != nil {
+		util.LogError("[alarm_controller.go AddPushMsg] fail, account: ", account, err)
+
+		this.Data["json"] = util.JsonResult(0, nil, err.Error())
+		this.ServeJSON()
+		return
+	}
+	util.LogInfo("[alarm_controller.go AddPushMsg] success, account: ", account)
+
+	this.Data["json"] = util.JsonResult(1, id, "add push message success.")
+	this.ServeJSON()
+}
