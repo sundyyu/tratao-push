@@ -69,13 +69,15 @@ func DoPush(msg amqp.Delivery, callChan chan int) {
 		pushSerice = &fcm.PushServiceImpl{}
 	}
 
-	// if err := pushSerice.DoPush("极简汇率提醒", body, deviceId); err != nil {
-	// 	util.LogError(err)
-	// }
-
-	if len(deviceId) > 0 && pushSerice != nil && len(body) > 0 {
-		// TODO
+	// 测试使用
+	deviceId = ""
+	if len(deviceId) < 1 {
+		return
 	}
+	if err := pushSerice.DoPush("极简汇率提醒", body, deviceId); err != nil {
+		util.LogError(err)
+	}
+
 }
 
 // 应答消息

@@ -130,9 +130,9 @@ func filterAlarm(alarms []model.Alarm, checkAlarm *CheckAlarm) []model.Alarm {
 		enable := alarm.Enabled
 		devId := alarm.DeviceId
 
-		// 数据验证和处理
-
+		// 数据验证
 		if enable && len(devId) >= 0 && len(baseCur) > 0 && len(targetCur) > 0 {
+
 			// 时间间隔判断
 			ltt := alarm.Ltt
 			ct := time.Now().Unix()

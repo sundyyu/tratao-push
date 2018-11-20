@@ -196,7 +196,8 @@ func (this *AlarmController) AddPushMsg() {
 	}
 	msg.Account = account
 	msg.DeviceId = gjson.GetBytes(reqBody, "token").String()
-	msg.Message = gjson.GetBytes(reqBody, "message").String()
+	msg.Title = gjson.GetBytes(reqBody, "title").String()
+	msg.Body = gjson.GetBytes(reqBody, "body").String()
 	msg.CreateTime = time.Now().Unix()
 
 	id, err := redis.AddPushMsg(msg)

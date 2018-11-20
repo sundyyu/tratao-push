@@ -8,7 +8,8 @@ type PushMsg struct {
 	Id         int64  `json:"id"`
 	Account    string `json:"account"`
 	DeviceId   string `json:"devid"`
-	Message    string `json:"message"`
+	Title      string `json:"title"`
+	Body       string `json:"body"`
 	CreateTime int64  `json:"createtime"`
 }
 
@@ -17,7 +18,8 @@ func GetPushMsgFields() []string {
 		"Id",
 		"Account",
 		"DeviceId",
-		"Message",
+		"Title",
+		"Body",
 		"CreateTime"}
 
 	return fields
@@ -35,11 +37,14 @@ func ResultToPushMsg(result []interface{}) PushMsg {
 	if deviceId, ok := result[2].(string); ok {
 		msg.DeviceId = deviceId
 	}
-	if message, ok := result[3].(string); ok {
-		msg.Message = message
+	if title, ok := result[3].(string); ok {
+		msg.Title = title
+	}
+	if body, ok := result[4].(string); ok {
+		msg.Body = body
 	}
 
-	if createTime, err := util.RedisResult2Int64(result[4]); err == nil {
+	if createTime, err := util.RedisResult2Int64(result[5]); err == nil {
 		msg.CreateTime = createTime
 	}
 	return msg
