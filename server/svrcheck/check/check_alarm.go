@@ -51,7 +51,7 @@ func (checkAlarm *CheckAlarm) Update() {
 		pipe := client.Pipeline()
 		defer redis.ClosePipeline(pipe)
 
-		t1 := time.Now().UnixNano()
+		// t1 := time.Now().UnixNano()
 		if ids, err := client.SMembers("alarm:ids").Result(); err == nil {
 
 			// 以p为基数，把总数量分成n组，每组通过Pipeline批量查询
@@ -76,9 +76,9 @@ func (checkAlarm *CheckAlarm) Update() {
 			// 等待所有线程执行完毕
 			wg.Wait()
 
-			t2 := time.Now().UnixNano()
-			util.LogInfo("===check alarm finish. time:", (t2-t1)/1e6, " millisecond")
-			util.LogInfo("***********************************************************")
+			// t2 := time.Now().UnixNano()
+			// util.LogInfo("===check alarm finish. time:", (t2-t1)/1e6, " millisecond")
+			// util.LogInfo("***********************************************************")
 		}
 	}
 }
@@ -142,7 +142,12 @@ func filterAlarm(alarms []model.Alarm, checkAlarm *CheckAlarm) []model.Alarm {
 			}
 
 			// 价格判断
-			price, _ := checkAlarm.UExrate.GetPrice(baseCur, targetCur)
+			price, err := checkAlarm.UExrate.GetPrice(baseCur, targetCur)
+			if err != nil {
+				util.LogError(err)
+			}
+			util.LogInfo("GetPrice: ["+baseCur+"/"+targetCur+"]", lprice, uprice, price)
+
 			if checkPrice(lprice, uprice, price) {
 				alarm.Price = price
 				a = append(a, alarm)

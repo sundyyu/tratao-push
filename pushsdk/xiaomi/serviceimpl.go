@@ -14,20 +14,20 @@ func (service *PushServiceImpl) DoPush(title string, body string, TPR string) er
 	cfg := config.GetConfig()
 
 	cli := NewClient(cfg.GetString("xiaomi.appSecret"), []string{cfg.GetString("xiaomi.appPkgName")})
-	msg := NewMessage(title, "").
+	msg := NewMessage(title, title).
 		SetPayload(body).
 		SetPassThrough(0).
 		StartLauncherActivity()
 	resp, err := cli.MultiSend(msg, []string{TPR})
 
-	util.LogInfo("xiaomi push response: ", resp)
+	util.LogInfo("xiaomi push response: ", util.ToJson(resp))
 	if err != nil {
 		return err
 	}
 
 	util.LogInfo(resp)
 
-	if resp.Code != 200 {
+	if resp.Code != 0 {
 		return errors.New("device [" + TPR + "] for xiaomi push failed.")
 	}
 	return nil

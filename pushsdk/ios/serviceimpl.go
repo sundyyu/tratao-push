@@ -17,7 +17,7 @@ func (service *PushServiceImpl) DoPush(title string, body string, TPR string) er
 	n := &Notification{title, body}
 	resp, err := client.Push(n, TPR)
 
-	util.LogInfo("ios push response: ", resp.Message)
+	util.LogInfo("ios push response: ", util.ToJson(resp))
 	if err != nil {
 		return err
 	}

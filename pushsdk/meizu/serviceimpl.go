@@ -21,7 +21,7 @@ func (service *PushServiceImpl) DoPush(title string, body string, TPR string) er
 	msg.PushTimeInfo.ValidTime = 1
 	resp, err := cli.Push(&msg, []string{TPR})
 
-	util.LogInfo("meizu push response: ", resp)
+	util.LogInfo("meizu push response: ", util.ToJson(resp))
 	if err != nil {
 		return err
 	}

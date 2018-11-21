@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sync"
 	"testing"
+	"tratao-push/config"
 )
 
 func Token(t *testing.T) {
@@ -47,6 +48,7 @@ func Token(t *testing.T) {
 
 func TestHuaWei(t *testing.T) {
 
+	config.LoadConfig("../../config/cfg.yaml")
 	//0866321030619723300002279300CN01    0860983035024104300002279300CN01
 	TPR := "0866321030619723300002279300CN01"
 	pushService := &PushServiceImpl{}

@@ -28,7 +28,7 @@ func main() {
 	// cfg := config.NewConfig("../../config/cfg.yaml")
 	cfg := config.LoadConfig(path)
 	alarmPath := cfg.GetString("http.alarmPath")
-	pushMsgPath := cfg.GetString("http.pushMsgPath")
+	// pushMsgPath := cfg.GetString("http.pushMsgPath")
 
 	beego.BConfig.Listen.HTTPPort = cfg.GetInt("http.listenAddr")
 	beego.BConfig.CopyRequestBody = true
@@ -39,6 +39,6 @@ func main() {
 	beego.Router(alarmPath+"/del", &controller.AlarmController{}, "delete:DelAlarm")
 	beego.Router(alarmPath+"/updatedev", &controller.AlarmController{}, "put:UpdateDevice")
 
-	beego.Router(pushMsgPath+"/add", &controller.AlarmController{}, "post:AddPushMsg")
+	beego.Router(alarmPath+"/push", &controller.AlarmController{}, "post:AddPushMsg")
 	beego.Run()
 }

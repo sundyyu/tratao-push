@@ -1,6 +1,7 @@
 package util
 
 import (
+	"encoding/json"
 	"errors"
 	"log"
 	"reflect"
@@ -92,4 +93,11 @@ func ReadChanNum(r chan int) int {
 }
 func WriteChanNum(w chan int, n int) {
 	w <- n
+}
+
+func ToJson(v interface{}) string {
+	if byt, err := json.Marshal(v); err == nil {
+		return string(byt)
+	}
+	return ""
 }

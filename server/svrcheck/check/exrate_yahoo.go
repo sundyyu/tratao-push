@@ -6,6 +6,7 @@ import (
 	"github.com/tidwall/gjson"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"sync"
 	"time"
 	"tratao-push/config"
@@ -13,8 +14,8 @@ import (
 )
 
 const (
-	YAHOO_APIURL  = "https://xcr.tratao.com/api/ver2/exchange/yahoo/latest"
-	YAHOO_BASECUR = "USD"
+	APIURL        = "https://xcr.tratao.com/api/ver2/exchange/yahoo/latest"
+	BASECUR       = "USD"
 	CUR_SEPARATOR = "/"
 )
 
@@ -34,32 +35,57 @@ func (yahoo *ExrateYahoo) GetPrice(baseCur string, targetCur string) (float64, e
 	prices := yahoo.Prices
 	key := baseCur + CUR_SEPARATOR + targetCur
 
-	if price, ok := prices[key]; ok {
-		return price, nil
-	} else {
-
-		baseKey := YAHOO_BASECUR + CUR_SEPARATOR + baseCur
-		targetKey := YAHOO_BASECUR + CUR_SEPARATOR + targetCur
-
-		var basePrice float64
-		var targetPrice float64
-
-		if basePrice, ok = prices[baseKey]; !ok {
-			return -1, errors.New("No exchange rate for base currency was found.")
-		}
-		if targetPrice, ok = prices[targetKey]; !ok {
-			return -1, errors.New("No exchange rate for target currency was found.")
-		}
-
-		// 利用高精度类decimal 进行汇率计算
-		baseDecimal := decimal.NewFromFloat(basePrice)
-		targetDecimal := decimal.NewFromFloat(targetPrice)
-		dec := targetDecimal.DivRound(baseDecimal, 10)
-		if price, ok := dec.Float64(); ok {
-			return price, nil
-		}
-		return -1, nil
+	// 本币对本币汇率为1
+	if strings.ToUpper(targetCur) == strings.ToUpper(baseCur) {
+		return 1, nil
 	}
+
+	// 目标货币是美元
+	if strings.ToUpper(targetCur) == BASECUR {
+		key = targetCur + CUR_SEPARATOR + baseCur
+	}
+
+	// 查找以美元为基础的货币
+	if strings.ToUpper(targetCur) == BASECUR || strings.ToUpper(baseCur) == BASECUR {
+		if price, ok := prices[key]; ok {
+
+			// 目标货币是美元
+			if strings.ToUpper(targetCur) == BASECUR {
+				return calculatePrice(price, 1), nil
+			}
+			return price, nil
+		} else {
+			return -1, errors.New("No exchange rate for currency [" + key + "] was found.")
+		}
+	}
+	return calculate(prices, baseCur, targetCur)
+}
+
+func calculate(prices map[string]float64, base string, target string) (float64, error) {
+	baseKey := BASECUR + CUR_SEPARATOR + base
+	targetKey := BASECUR + CUR_SEPARATOR + target
+
+	var basePrice float64
+	var targetPrice float64
+	var ok bool
+
+	if basePrice, ok = prices[baseKey]; !ok {
+		return -1, errors.New("No exchange rate for base currency [" + baseKey + "] was found.")
+	}
+	if targetPrice, ok = prices[targetKey]; !ok {
+		return -1, errors.New("No exchange rate for target currency [" + targetKey + "] was found.")
+	}
+	return calculatePrice(basePrice, targetPrice), nil
+}
+
+// 利用高精度类decimal 进行汇率计算
+func calculatePrice(base float64, target float64) float64 {
+	baseDecimal := decimal.NewFromFloat(base)
+	targetDecimal := decimal.NewFromFloat(target)
+	dec := targetDecimal.DivRound(baseDecimal, 10)
+
+	price, _ := dec.Float64()
+	return price
 }
 
 func (yahoo *ExrateYahoo) Update() {
@@ -69,7 +95,7 @@ func (yahoo *ExrateYahoo) Update() {
 		}
 	}()
 
-	res, err := http.Get(YAHOO_APIURL)
+	res, err := http.Get(APIURL)
 	util.LogError(err)
 	defer res.Body.Close()
 

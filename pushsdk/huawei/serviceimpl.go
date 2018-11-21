@@ -20,12 +20,12 @@ func (service *PushServiceImpl) DoPush(title string, body string, TPR string) er
 
 	resp, err := cli.Push(n)
 
-	util.LogInfo("huawei push response: ", resp)
+	util.LogInfo("huawei push response: ", util.ToJson(resp))
 	if err != nil {
 		return err
 	}
 
-	if resp.Code != "200" {
+	if resp.Code != "80000000" {
 		return errors.New("device [" + TPR + "] for huawei push failed.")
 	}
 	return nil

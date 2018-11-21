@@ -33,7 +33,6 @@ check:
 
 http:
   alarmPath: "/api/alarm"      # 预警信息根路径
-  pushMsgPath: "/api/pushmsg"  # 推送信息根路径
   listenAddr: 8080             # API服务器端口
 
 xiaomi:
@@ -50,11 +49,11 @@ huawei:
   appPkgName: "com.example.traveltao.xcpushdemo"     # 华为app包名
 
 ios:
-  cerPath: "/Users/traveltao/Documents/notification.p12"  # IOS证书
+  cerPath: "/Users/traveltao/test/notification.p12"  # IOS证书
   cerPass: "123456"                                       # IOS证书密码
 
 fcm:
-  cfgPath: "/Users/traveltao/tratao-9bdd1-firebase-adminsdk-ay1zj-cc9ada5246.json" # google秘钥
+  cfgPath: "/Users/traveltao/test/tratao-9bdd1-firebase-adminsdk-ay1zj-cc9ada5246.json" # google秘钥
 
 test:
   alived: true

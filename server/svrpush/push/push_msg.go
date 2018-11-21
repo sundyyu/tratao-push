@@ -40,7 +40,7 @@ func DoPushMsg(msg amqp.Delivery, callChan chan int) {
 	}
 
 	deviceId := pushMsg.DeviceId
-	deviceOS := ""
+	deviceOS := strings.ToLower("")
 	deviceCountry := ""
 	title := pushMsg.Title
 	body := pushMsg.Body
@@ -64,8 +64,9 @@ func DoPushMsg(msg amqp.Delivery, callChan chan int) {
 	}
 
 	// 测试使用
-	deviceId = ""
-	if len(deviceId) < 1 {
+	// deviceId = ""
+
+	if len(deviceId) <= 0 {
 		return
 	}
 	if err := pushSerice.DoPush(title, body, deviceId); err != nil {

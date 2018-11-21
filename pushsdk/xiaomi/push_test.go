@@ -2,9 +2,12 @@ package xiaomi
 
 import (
 	"testing"
+	"tratao-push/config"
 )
 
 func TestXiaoMi(t *testing.T) {
+
+	config.LoadConfig("../../config/cfg.yaml")
 
 	// 小米
 	// regId := "J5Ka5zXthn2pKd3nHmblcTJXR4bdYAs0xt1QVm8JXcrlwdzK5iH8jfkg/pMuPk7+"

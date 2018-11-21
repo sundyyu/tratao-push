@@ -45,7 +45,7 @@ func DoPush(msg amqp.Delivery, callChan chan int) {
 	price := alarm.Price
 
 	deviceId := alarm.DeviceId
-	deviceOS := alarm.DeviceOS
+	deviceOS := strings.ToLower(alarm.DeviceOS)
 	// deviceLang := alarm.DeviceLang
 	deviceCountry := alarm.DeviceCountry
 
@@ -70,11 +70,12 @@ func DoPush(msg amqp.Delivery, callChan chan int) {
 	}
 
 	// 测试使用
-	deviceId = ""
-	if len(deviceId) < 1 {
+	// deviceId = ""
+
+	if len(deviceId) <= 0 {
 		return
 	}
-	if err := pushSerice.DoPush("极简汇率提醒", body, deviceId); err != nil {
+	if err := pushSerice.DoPush("极简汇率", body, deviceId); err != nil {
 		util.LogError(err)
 	}
 
