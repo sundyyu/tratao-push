@@ -26,8 +26,6 @@ func (service *PushServiceImpl) DoPush(title string, body string, TPR string) er
 		return err
 	}
 
-	util.LogInfo(resp)
-
 	if resp.Code != "200" {
 		return errors.New("device [" + TPR + "] for meizu push failed.")
 	}

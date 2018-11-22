@@ -23,8 +23,6 @@ func (service *PushServiceImpl) DoPush(title string, body string, TPR string) er
 		return err
 	}
 
-	util.LogInfo(resp.Message)
-
 	if !strings.Contains(resp.Message, "messages/0:") {
 		return errors.New("device [" + TPR + "] for FCM push failed.")
 	}

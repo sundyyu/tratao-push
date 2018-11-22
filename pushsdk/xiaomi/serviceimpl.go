@@ -14,7 +14,7 @@ func (service *PushServiceImpl) DoPush(title string, body string, TPR string) er
 	cfg := config.GetConfig()
 
 	cli := NewClient(cfg.GetString("xiaomi.appSecret"), []string{cfg.GetString("xiaomi.appPkgName")})
-	msg := NewMessage(title, title).
+	msg := NewMessage(title, body).
 		SetPayload(body).
 		SetPassThrough(0).
 		StartLauncherActivity()
@@ -24,8 +24,6 @@ func (service *PushServiceImpl) DoPush(title string, body string, TPR string) er
 	if err != nil {
 		return err
 	}
-
-	util.LogInfo(resp)
 
 	if resp.Code != 0 {
 		return errors.New("device [" + TPR + "] for xiaomi push failed.")
