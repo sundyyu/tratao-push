@@ -4,8 +4,8 @@ import (
 	"errors"
 	"github.com/go-redis/redis"
 	"strconv"
-	"tratao-push/model"
-	"tratao-push/util"
+	"xcurrency-push/model"
+	"xcurrency-push/util"
 )
 
 func AddPushMsg(msg model.PushMsg) (int64, error) {

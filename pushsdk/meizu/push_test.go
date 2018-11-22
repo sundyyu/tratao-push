@@ -2,7 +2,7 @@ package meizu
 
 import (
 	"testing"
-	"tratao-push/config"
+	"xcurrency-push/config"
 )
 
 func TestMeiZu(t *testing.T) {

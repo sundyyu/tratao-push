@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"testing"
 	"time"
-	"tratao-push/model"
-	"tratao-push/util"
+	"xcurrency-push/model"
+	"xcurrency-push/util"
 )
 
 func TestRedis(t *testing.T) {

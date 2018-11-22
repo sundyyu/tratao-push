@@ -6,7 +6,7 @@ import (
 	"github.com/samuel/go-zookeeper/zk"
 	// "os"
 	"time"
-	// "tratao-push/util"
+	// "xcurrency-push/util"
 )
 
 var hosts = []string{"192.168.1.104:2181"}

@@ -1,7 +1,7 @@
 package model
 
 import (
-	"tratao-push/util"
+	"xcurrency-push/util"
 )
 
 type PushMsg struct {

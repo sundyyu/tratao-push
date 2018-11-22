@@ -4,7 +4,7 @@ import (
 	"fmt"
 	// "path/filepath"
 	"testing"
-	"tratao-push/model"
+	"xcurrency-push/model"
 	// "tratao-push/redis"
 )
 

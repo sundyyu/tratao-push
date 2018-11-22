@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 	"os"
-	"tratao-push/config"
-	"tratao-push/server/svrcheck/check"
-	"tratao-push/util"
+	"xcurrency-push/config"
+	"xcurrency-push/server/svrcheck/check"
+	"xcurrency-push/util"
 )
 
 func main() {

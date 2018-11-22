@@ -9,8 +9,8 @@ import (
 	"strings"
 	"sync"
 	"time"
-	"tratao-push/config"
-	"tratao-push/util"
+	"xcurrency-push/config"
+	"xcurrency-push/util"
 )
 
 const (

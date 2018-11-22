@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 	"testing"
-	"tratao-push/config"
+	"xcurrency-push/config"
 )
 
 func Token(t *testing.T) {

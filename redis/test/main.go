@@ -9,10 +9,10 @@ import (
 	"os"
 	"strconv"
 	"time"
-	"tratao-push/config"
-	"tratao-push/model"
-	"tratao-push/redis"
-	"tratao-push/util"
+	"xcurrency-push/config"
+	"xcurrency-push/model"
+	"xcurrency-push/redis"
+	"xcurrency-push/util"
 )
 
 func main() {

@@ -2,7 +2,7 @@ package xiaomi
 
 import (
 	"testing"
-	"tratao-push/config"
+	"xcurrency-push/config"
 )
 
 func TestXiaoMi(t *testing.T) {

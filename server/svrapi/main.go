@@ -4,9 +4,9 @@ import (
 	"flag"
 	"github.com/astaxie/beego"
 	"os"
-	"tratao-push/config"
-	"tratao-push/server/svrapi/controller"
-	"tratao-push/util"
+	"xcurrency-push/config"
+	"xcurrency-push/server/svrapi/controller"
+	"xcurrency-push/util"
 )
 
 func main() {

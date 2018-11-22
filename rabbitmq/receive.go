@@ -2,7 +2,7 @@ package rabbitmq
 
 import (
 	"github.com/streadway/amqp"
-	"tratao-push/util"
+	"xcurrency-push/util"
 )
 
 const ALARM_QUEUE = "alarm_queue"

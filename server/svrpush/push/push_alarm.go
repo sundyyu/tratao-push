@@ -5,14 +5,14 @@ import (
 	"github.com/streadway/amqp"
 	"strconv"
 	"strings"
-	"tratao-push/model"
-	"tratao-push/pushsdk"
-	"tratao-push/pushsdk/fcm"
-	"tratao-push/pushsdk/huawei"
-	"tratao-push/pushsdk/ios"
-	"tratao-push/pushsdk/meizu"
-	"tratao-push/pushsdk/xiaomi"
-	"tratao-push/util"
+	"xcurrency-push/model"
+	"xcurrency-push/pushsdk"
+	"xcurrency-push/pushsdk/fcm"
+	"xcurrency-push/pushsdk/huawei"
+	"xcurrency-push/pushsdk/ios"
+	"xcurrency-push/pushsdk/meizu"
+	"xcurrency-push/pushsdk/xiaomi"
+	"xcurrency-push/util"
 )
 
 type AlarmReceive struct {

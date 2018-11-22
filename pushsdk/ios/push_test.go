@@ -2,7 +2,7 @@ package ios
 
 import (
 	"testing"
-	"tratao-push/util"
+	"xcurrency-push/util"
 )
 
 func TestIOS(t *testing.T) {

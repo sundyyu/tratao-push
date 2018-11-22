@@ -3,8 +3,8 @@ package redis
 import (
 	"github.com/go-redis/redis"
 	"sync"
-	"tratao-push/config"
-	"tratao-push/util"
+	"xcurrency-push/config"
+	"xcurrency-push/util"
 )
 
 var once sync.Once

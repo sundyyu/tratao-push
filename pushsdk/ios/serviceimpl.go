@@ -2,8 +2,8 @@ package ios
 
 import (
 	"errors"
-	"tratao-push/config"
-	"tratao-push/util"
+	"xcurrency-push/config"
+	"xcurrency-push/util"
 )
 
 type PushServiceImpl struct {

@@ -4,8 +4,8 @@ import (
 	"github.com/streadway/amqp"
 	"strconv"
 	"sync"
-	"tratao-push/config"
-	"tratao-push/util"
+	"xcurrency-push/config"
+	"xcurrency-push/util"
 )
 
 var connLock *sync.Mutex = new(sync.Mutex)

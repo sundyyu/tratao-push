@@ -4,9 +4,9 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/tidwall/gjson"
 	"time"
-	"tratao-push/model"
-	"tratao-push/redis"
-	"tratao-push/util"
+	"xcurrency-push/model"
+	"xcurrency-push/redis"
+	"xcurrency-push/util"
 )
 
 type AlarmController struct {

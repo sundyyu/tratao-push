@@ -5,7 +5,7 @@ import (
 	"github.com/micro/go-config/source/file"
 	"strings"
 	"sync"
-	"tratao-push/util"
+	"xcurrency-push/util"
 )
 
 /**

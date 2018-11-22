@@ -5,8 +5,8 @@ import (
 	"github.com/go-redis/redis"
 	"strconv"
 	"time"
-	"tratao-push/model"
-	"tratao-push/util"
+	"xcurrency-push/model"
+	"xcurrency-push/util"
 )
 
 func AddAlarm(alarm model.Alarm) (int64, error) {

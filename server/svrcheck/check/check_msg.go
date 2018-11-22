@@ -3,10 +3,10 @@ package check
 import (
 	"github.com/json-iterator/go"
 	"time"
-	"tratao-push/config"
-	"tratao-push/rabbitmq"
-	"tratao-push/redis"
-	"tratao-push/util"
+	"xcurrency-push/config"
+	"xcurrency-push/rabbitmq"
+	"xcurrency-push/redis"
+	"xcurrency-push/util"
 )
 
 type CheckMessage struct {

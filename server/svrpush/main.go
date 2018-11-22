@@ -3,10 +3,10 @@ package main
 import (
 	"flag"
 	"os"
-	"tratao-push/config"
-	"tratao-push/rabbitmq"
-	"tratao-push/server/svrpush/push"
-	"tratao-push/util"
+	"xcurrency-push/config"
+	"xcurrency-push/rabbitmq"
+	"xcurrency-push/server/svrpush/push"
+	"xcurrency-push/util"
 )
 
 func main() {
