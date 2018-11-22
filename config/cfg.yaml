@@ -40,8 +40,8 @@ xiaomi:
   appPkgName: "com.example.traveltao.xcpushdemo"     # 小米app包名
 
 meizu:
-  appId: "115226"                                    # 魅族appId
-  appSecret: "6a47ac956c3b44648bac55e0b350e3c9"      # 魅族appSecret
+  appId: "115260"                                    # 魅族appId
+  appSecret: "14854195ceb84bc4b7c619e3dd3e7f80"      # 魅族appSecret
 
 huawei:
   appId: "100384977"                                 # 华为appId

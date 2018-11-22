@@ -8,7 +8,7 @@ import (
 func TestMeiZu(t *testing.T) {
 	config.LoadConfig("../../config/cfg.yaml")
 
-	TPR := "UCI4e0f4d7a027f4948017d70416a627f48470c467106"
+	TPR := "S5Q4b726e754068797c5e455a040007585c4271657a42"
 	pushService := &PushServiceImpl{}
 	pushService.DoPush("极简汇率测试", "极简汇率第1次推送测试", TPR)
 

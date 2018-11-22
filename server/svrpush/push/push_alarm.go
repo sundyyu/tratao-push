@@ -47,7 +47,7 @@ func DoPush(msg amqp.Delivery, callChan chan int) {
 	deviceId := alarm.DeviceId
 	deviceOS := strings.ToLower(alarm.DeviceOS)
 	// deviceLang := alarm.DeviceLang
-	deviceCountry := alarm.DeviceCountry
+	deviceCountry := strings.ToLower(alarm.DeviceCountry)
 
 	p := strconv.FormatFloat(price, 'E', -1, 64)
 	body := "您关注的汇率[" + baseCur + "/" + targetCur + "] 当前值为：" + p + "," + " 已达到你设置的预警阈值。"
@@ -63,7 +63,7 @@ func DoPush(msg amqp.Delivery, callChan chan int) {
 		pushSerice = &xiaomi.PushServiceImpl{}
 	} else if strings.Contains(deviceOS, "ios") {
 		pushSerice = &ios.PushServiceImpl{}
-	} else if strings.Contains(deviceCountry, "CN") { // 中国的其他手机小米推送
+	} else if strings.Contains(deviceCountry, "cn") { // 中国的其他手机小米推送
 		pushSerice = &xiaomi.PushServiceImpl{}
 	} else { // 国外的手机FCM推送
 		pushSerice = &fcm.PushServiceImpl{}

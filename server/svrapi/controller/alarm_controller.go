@@ -66,15 +66,16 @@ func (this *AlarmController) UpdateAlarm() {
 	alarm.Id = id
 
 	// Account
-	account := gjson.GetBytes(reqBody, "account").String()
-	if len(account) == 0 {
-		util.LogError("[alarm_controller.go UpdateAlarm] fail, account: ", account, "account can not be empty.")
+	// account := gjson.GetBytes(reqBody, "account").String()
+	// if len(account) == 0 {
+	// 	util.LogError("[alarm_controller.go UpdateAlarm] fail, account: ", account, "account can not be empty.")
+	//
+	// 	this.Data["json"] = util.JsonResult(0, nil, "account error. account can not be empty.")
+	// 	this.ServeJSON()
+	// 	return
+	// }
+	// alarm.Account = account
 
-		this.Data["json"] = util.JsonResult(0, nil, "account error. account can not be empty.")
-		this.ServeJSON()
-		return
-	}
-	alarm.Account = account
 	alarm.BaseCur = gjson.GetBytes(reqBody, "basecur").String()
 	alarm.TargetCur = gjson.GetBytes(reqBody, "targetcur").String()
 	alarm.LbPrice = gjson.GetBytes(reqBody, "lbprice").Float()

@@ -99,7 +99,7 @@ func (c *Client) doPost(url string, form url.Values) ([]byte, error) {
 	var err error
 	req, err = http.NewRequest("POST", url, strings.NewReader(form.Encode()))
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
 	req.Header.Set("Authorization", "key="+c.appSecret)
