@@ -26,7 +26,7 @@ type CheckAlarm struct {
 func (checkAlarm *CheckAlarm) Update() {
 	defer func() {
 		if err := recover(); err != nil {
-			util.LogErrorM(err, "Recover [alarm_check.go CheckAlarm] error.")
+			util.LogErrorM(err, "Recover [check_alarm.go CheckAlarm] error.")
 		}
 	}()
 
@@ -165,7 +165,7 @@ func filterAlarm(alarms []model.Alarm, checkAlarm *CheckAlarm) []model.Alarm {
 func DoSend(alarms []model.Alarm, ch *amqp.Channel, send chan int, x int, wg *sync.WaitGroup, pipe gredis.Pipeliner) {
 	defer func() {
 		if err := recover(); err != nil {
-			util.LogErrorM(err, "Recover [alarm_check.go CheckAlarm DoSend] error.")
+			util.LogErrorM(err, "Recover [check_alarm.go CheckAlarm DoSend] error.")
 		}
 	}()
 	defer wg.Done()

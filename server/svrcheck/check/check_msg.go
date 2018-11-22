@@ -20,7 +20,7 @@ type CheckMessage struct {
 func (checkMessage *CheckMessage) Update() {
 	defer func() {
 		if err := recover(); err != nil {
-			util.LogErrorM(err, "Recover [alarm_message.go CheckMessage] error.")
+			util.LogErrorM(err, "Recover [check_msg.go CheckMessage] error.")
 		}
 	}()
 
