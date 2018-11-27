@@ -19,12 +19,9 @@ var Data = []byte("trataodata")
 var Acls = zk.WorldACL(zk.PermAll)
 
 func GetConn() *zk.Conn {
-	cfg := config.GetConfig()
+	initNode()
 
-	// init
-	Path = cfg.GetString("node.rootPath")
-	Node = cfg.GetString("node.nodePath")
-	NodeSuffix = cfg.GetString("node.nodeSuffix")
+	cfg := config.GetConfig()
 	host := cfg.GetString("zookeeper.addrs")
 	hosts := strings.Split(host, ",")
 	timeout := cfg.GetInt("zookeeper.timeout")
@@ -101,4 +98,33 @@ func NodeIdToInt(str string) int {
 		}
 	}
 	return -1
+}
+
+// 获得分布式锁，否则一直被阻塞
+func Acquire(conn *zk.Conn) {
+	initNode()
+	CreateNode(conn, Path, Data, Flags)
+	nid := CreateSeqNode(conn, Node, Data)
+	ch := make(chan []string, 1)
+	WatchChildren(conn, Path, ch)
+	acch := make(chan int, 1)
+	for {
+		child := <-ch
+		c := NodeArr2IntArr(child)
+		n := NodeIdToInt(nid)
+		util.LogInfo(n, c)
+		if n == c[0] {
+			acch <- 1
+			util.LogInfo("get lock and acquire success.")
+			break
+		}
+	}
+	<-acch
+}
+
+func initNode() {
+	cfg := config.GetConfig()
+	Path = cfg.GetString("node.rootPath")
+	Node = cfg.GetString("node.nodePath")
+	NodeSuffix = cfg.GetString("node.nodeSuffix")
 }
