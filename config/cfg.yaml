@@ -1,14 +1,12 @@
 node:
-  id: gate-1                  # unique id of this server
-  addr: 192.168.1.104:9901    # rpc address
-  rpcTimeout: 3000            # in milliseconds
+  rootPath: /trataolock               # root path
+  nodePath: /trataolock/trataonode-   # node path
+  nodeSuffix: trataonode-             # node suffix
 
 zookeeper:
-  addrs: [192.168.1.104:2181]  # server address list
-  timeout: 10000               # session timeout, in milliseconds
-
-log:
-#  cfgFile: gate-log.xml   # xml configuration file
+  addrs: 192.168.1.104:2181    # server address list
+  timeout: 10                  # session timeout, in seconds
+  watchtime: 10                # node watch time, in seconds
 
 redis:
   addr: 192.168.1.104:6379    # server address
@@ -17,22 +15,22 @@ redis:
   database:                   # default value is 0
 
 rabbitmq:
-  ip: 192.168.1.104       # server ip
-  port: 5672              # server port
-  user: tratao            # user
-  password: tratao        # password
+  ip: 192.168.1.104           # server ip
+  port: 5672                  # server port
+  user: tratao                # user
+  password: tratao            # password
 
 check:
-  pipeExecCount: 5000     # pipeline 每次最大查询数量
-  maxSend: 20             # 最大发送线程数
-  maxReceive: 10          # 最大接收线程数
-  alarmTickTime: 15       # 预警定时器时间（秒）
-  exrateTickTime: 60      # 汇率定时器时间（秒）
-  pushMsgTickTime: 10     # 推送消息定时器时间（秒）
-  pushMsgQueue: "msg_queue"
+  pipeExecCount: 5000          # pipeline 每次最大查询数量
+  maxSend: 20                  # 最大发送线程数
+  maxReceive: 10               # 最大接收线程数
+  alarmTickTime: 10            # 预警定时器时间（秒）
+  exrateTickTime: 60           # 汇率定时器时间（秒）
+  pushMsgTickTime: 10          # 推送消息定时器时间（秒）
+  pushMsgQueue: "msg_queue"    # 推送队列名称
 
 http:
-  alarmPath: "/api/alarm"      # 预警信息根路径
+  alarmPath: "/api/alarm"      # 预警接口根路径
   listenAddr: 8080             # API服务器端口
 
 xiaomi:
@@ -50,10 +48,10 @@ huawei:
 
 ios:
   cerPath: "/Users/traveltao/test/notification.p12"  # IOS证书
-  cerPass: "123456"                                       # IOS证书密码
+  cerPass: "123456"                                  # IOS证书密码
 
 fcm:
-  cfgPath: "/Users/traveltao/test/tratao-9bdd1-firebase-adminsdk-ay1zj-cc9ada5246.json" # google秘钥
+  cfgPath: "/Users/traveltao/test/xcpushdemo-firebase-adminsdk-iy30t-340376f811.json" # google秘钥
 
 test:
   alived: true

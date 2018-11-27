@@ -2,11 +2,14 @@ package fcm
 
 import (
 	"testing"
+	"xcurrency-push/config"
 )
 
 func TestFCM(t *testing.T) {
 
-	TPR := "drH1k3PVhgk:APA91bERRAfrZx8M0NneyS1kYVkmDSCcJdfUvHsv1urEzTD88QVeu8SfMX7dQH16D1EOcmlfwCoJuJueMV4EhNEMAPXMzir73nP-9EVx_E9m5OkhfGa6yrtdxii62bYB26tTRsEZZlmc"
+	config.LoadConfig("../../config/cfg.yaml")
+
+	TPR := "f2IRZl96bC0:APA91bH7E8pize0YtewfCoCEIJzhK1asni44iR1kDL5h0XG9NFDxm-1SomAUy-nDwqc7NTA465Q19LF4YNcWzCdF07H-Q8c4BSyos2dy9SqK9mTB4vN5gzKxnnik7CnFiAKG5VtC77V1"
 	pushService := &PushServiceImpl{}
 	pushService.DoPush("极简汇率测试", "极简汇率第1次推送测试", TPR)
 
