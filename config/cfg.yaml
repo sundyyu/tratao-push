@@ -1,7 +1,7 @@
 node:
-  rootPath: /trataolock               # root path
-  nodePath: /trataolock/trataonode-   # node path
-  nodeSuffix: trataonode-             # node suffix
+  root: tratao   # 根节点名
+  nodeMutex: nodemutex    # 服务器互斥锁节点名
+  nodePart: nodepart      # 服务器分片节点名
 
 zookeeper:
   addrs: 192.168.1.104:2181    # server address list

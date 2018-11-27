@@ -10,17 +10,15 @@ import (
 	"xcurrency-push/util"
 )
 
-var Path = ""
-var Node = ""
-var NodeSuffix = ""
+// var Path = ""
+// var Node = ""
+// var NodeSuffix = ""
 
 var Flags int32 = 0
 var Data = []byte("trataodata")
 var Acls = zk.WorldACL(zk.PermAll)
 
 func GetConn() *zk.Conn {
-	initNode()
-
 	cfg := config.GetConfig()
 	host := cfg.GetString("zookeeper.addrs")
 	hosts := strings.Split(host, ",")
@@ -76,21 +74,21 @@ func WatchChildren(zkconn *zk.Conn, path string, ch chan []string) {
 }
 
 // Node数组转为Int数组
-func NodeArr2IntArr(strs []string) []int {
+func NodeArr2IntArr(strs []string, node string) []int {
 	if strs == nil {
 		return []int{}
 	}
 	r := make([]int, 0, len(strs))
 	for _, str := range strs {
-		r = append(r, NodeIdToInt(str))
+		r = append(r, NodeIdToInt(str, node))
 	}
 	sort.Ints(r)
 	return r
 }
 
 // NodeId转为Int数字
-func NodeIdToInt(str string) int {
-	sarr := strings.Split(str, NodeSuffix)
+func NodeIdToInt(str string, node string) int {
+	sarr := strings.Split(str, node)
 	if len(sarr) > 1 {
 		s := sarr[len(sarr)-1]
 		if i, err := strconv.Atoi(s); err == nil {
@@ -100,31 +98,40 @@ func NodeIdToInt(str string) int {
 	return -1
 }
 
-// 获得分布式锁，否则一直被阻塞
-func Acquire(conn *zk.Conn) {
-	initNode()
-	CreateNode(conn, Path, Data, Flags)
-	nid := CreateSeqNode(conn, Node, Data)
+// 获得互斥锁，否则一直被阻塞
+func AcquireMetux(conn *zk.Conn) {
+	cfg := config.GetConfig()
+	path := cfg.GetString("node.root")
+	node := cfg.GetString("node.nodeMutex")
+	Acquire(conn, path, node)
+}
+
+// 获得分片锁，否则一直被阻塞
+func AcquirePart(conn *zk.Conn) {
+	cfg := config.GetConfig()
+	path := cfg.GetString("node.root")
+	node := cfg.GetString("node.nodePart")
+	Acquire(conn, path, node)
+}
+
+func Acquire(conn *zk.Conn, path string, node string) {
+	rootPath := "/" + path + "/" + node
+	nodeName := node + "-"
+	CreateNode(conn, rootPath, Data, Flags)
+	nid := CreateSeqNode(conn, rootPath+"/"+nodeName, Data)
 	ch := make(chan []string, 1)
-	WatchChildren(conn, Path, ch)
+	WatchChildren(conn, rootPath, ch)
 	acch := make(chan int, 1)
 	for {
 		child := <-ch
-		c := NodeArr2IntArr(child)
-		n := NodeIdToInt(nid)
-		util.LogInfo(n, c)
+		c := NodeArr2IntArr(child, nodeName)
+		n := NodeIdToInt(nid, nodeName)
+		util.LogInfo(n, c, child)
 		if n == c[0] {
 			acch <- 1
-			util.LogInfo("get lock and acquire success.")
+			util.LogInfo(node + " get lock and acquire success.")
 			break
 		}
 	}
 	<-acch
-}
-
-func initNode() {
-	cfg := config.GetConfig()
-	Path = cfg.GetString("node.rootPath")
-	Node = cfg.GetString("node.nodePath")
-	NodeSuffix = cfg.GetString("node.nodeSuffix")
 }

@@ -14,7 +14,9 @@ func main() {
 		return
 	}
 	defer conn.Close()
-	zkclient.Acquire(conn)
+
+	zkclient.AcquireMetux(conn)
+	zkclient.AcquirePart(conn)
 
 	<-forever
 }
