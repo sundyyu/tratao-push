@@ -105,16 +105,16 @@ func NodeIdToInt(str string, node string) int {
 // 获得互斥锁，否则一直被阻塞
 func AcquireMetux(conn *zk.Conn) {
 	cfg := config.GetConfig()
-	path := cfg.GetString("node.root")
-	node := cfg.GetString("node.nodeMutex")
+	path := cfg.GetString("zkserver.root")
+	node := cfg.GetString("zkserver.nodeMutex")
 	Acquire(conn, path, node)
 }
 
 // 获得分片锁，否则一直被阻塞
 func AcquirePart(conn *zk.Conn) {
 	cfg := config.GetConfig()
-	path := cfg.GetString("node.root")
-	node := cfg.GetString("node.nodePart")
+	path := cfg.GetString("zkserver.root")
+	node := cfg.GetString("zkserver.nodePart")
 	Acquire(conn, path, node)
 }
 
@@ -139,15 +139,15 @@ func Acquire(conn *zk.Conn, path string, node string) {
 
 func WatchNodePart(conn *zk.Conn, ch chan []string) (string, error) {
 	cfg := config.GetConfig()
-	path := cfg.GetString("node.root")
-	node := cfg.GetString("node.nodePart")
+	path := cfg.GetString("zkserver.root")
+	node := cfg.GetString("zkserver.nodePart")
 	return WatchNode(conn, path, node, ch)
 }
 
 func WatchNodePart4Int(conn *zk.Conn, ch chan []int) (int, error) {
 	cfg := config.GetConfig()
-	path := cfg.GetString("node.root")
-	node := cfg.GetString("node.nodePart")
+	path := cfg.GetString("zkserver.root")
+	node := cfg.GetString("zkserver.nodePart")
 	return WatchNode4Int(conn, path, node, ch)
 }
 

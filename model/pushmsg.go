@@ -1,19 +1,20 @@
 package model
 
 import (
+	"time"
 	"xcurrency-push/util"
 )
 
 type PushMsg struct {
-	Id            int64  `json:"id"`
-	Account       string `json:"account"`
-	DeviceId      string `json:"devid"`
-	DeviceOS      string `json:"devos"`
-	DeviceCountry string `json:"devcountry"`
-	DeviceLang    string `json:"devlang"`
-	Title         string `json:"title"`
-	Body          string `json:"body"`
-	CreateTime    int64  `json:"createtime"`
+	Id            int64     `json:"id"`
+	Account       string    `json:"account"`
+	DeviceId      string    `json:"devid"`
+	DeviceOS      string    `json:"devos"`
+	DeviceCountry string    `json:"devcountry"`
+	DeviceLang    string    `json:"devlang"`
+	Title         string    `json:"title"`
+	Body          string    `json:"body"`
+	CreateTime    time.Time `json:"createtime" time_format:"2006-01-02 15:04:05" time_location:"UTC"`
 }
 
 func GetPushMsgFields() []string {
@@ -59,8 +60,8 @@ func ResultToPushMsg(result []interface{}) PushMsg {
 		msg.Body = body
 	}
 
-	if createTime, err := util.RedisResult2Int64(result[5]); err == nil {
-		msg.CreateTime = createTime
-	}
+	// if createTime, err := util.RedisResult2Int64(result[5]); err == nil {
+	// 	msg.CreateTime = createTime
+	// }
 	return msg
 }

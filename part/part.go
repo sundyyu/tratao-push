@@ -20,7 +20,8 @@ const (
 var PartArr []int
 var NextIndex int
 var ServerCount map[string]int64 = map[string]int64{}
-var lock *sync.Mutex = new(sync.Mutex)
+var addLock *sync.Mutex = new(sync.Mutex)
+var indexLock *sync.Mutex = new(sync.Mutex)
 
 /**
 * @desc 服务器分片计算
@@ -89,7 +90,15 @@ func NextNodeNum(zkNodeNums []int) int {
 * @author 于朝鹏
  */
 func ServerIndex(servers []string) int {
-	s := len(servers)
+	indexLock.Lock()
+	defer indexLock.Unlock()
+
+	s := 0
+	if client, err := redis.GetClient(); err == nil {
+		if r, err := client.SCard(ALARM_SERVER).Result(); err == nil {
+			s = int(r)
+		}
+	}
 	if s <= 1 {
 		return 0
 	}
@@ -106,8 +115,6 @@ func ServerIndex(servers []string) int {
 }
 
 func GetCount(i int) int64 {
-	lock.Lock()
-	defer lock.Unlock()
 	var count int64
 	if v, ok := ServerCount[ALARMID_PREFIX+strconv.Itoa(i)]; ok {
 		count = v
@@ -121,8 +128,8 @@ func GetCount(i int) int64 {
 }
 
 func AddCount(i int) {
-	lock.Lock()
-	defer lock.Unlock()
+	addLock.Lock()
+	defer addLock.Unlock()
 	var count int64
 	if v, ok := ServerCount[ALARMID_PREFIX+strconv.Itoa(i)]; ok {
 		count = v

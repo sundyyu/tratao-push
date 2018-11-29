@@ -2,7 +2,6 @@ package check
 
 import (
 	"github.com/json-iterator/go"
-	"time"
 	"xcurrency-push/config"
 	"xcurrency-push/rabbitmq"
 	"xcurrency-push/redis"
@@ -37,7 +36,6 @@ func (checkMessage *CheckMessage) Update() {
 		pipe := client.Pipeline()
 		defer redis.ClosePipeline(pipe)
 
-		// t1 := time.Now().UnixNano()
 		if ids, err := client.SMembers("alarm:pushmsg:ids").Result(); err == nil {
 
 			// 批量查询
@@ -54,11 +52,6 @@ func (checkMessage *CheckMessage) Update() {
 					redis.DelPushMsgArr(ids, pipe)
 				}
 			}
-
-			time.Now().UnixNano()
-			// t2 := time.Now().UnixNano()
-			// util.LogInfo("===check push message finish. time:", (t2-t1)/1e6, " millisecond")
-			// util.LogInfo("----------------------------------------------------------")
 		}
 	}
 }
