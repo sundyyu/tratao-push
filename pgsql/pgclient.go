@@ -14,7 +14,9 @@ var dbLock *sync.Mutex = new(sync.Mutex)
 var connChan chan *sql.DB
 
 func initConn() error {
+	connChan = make(chan *sql.DB, 10)
 	cfg := config.GetConfig()
+	max := cfg.GetInt("check.maxReceive")
 	host := cfg.GetString("postgresql.ip")
 	port := cfg.GetInt("postgresql.port")
 	dbname := cfg.GetString("postgresql.dbname")
@@ -23,8 +25,7 @@ func initConn() error {
 
 	pqsql := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
-	connChan = make(chan *sql.DB, 10)
-	for i := 0; i < 10; i++ {
+	for i := 0; i < max; i++ {
 		if db, err := sql.Open("postgres", pqsql); err == nil {
 			connChan <- db
 		} else {
@@ -58,7 +59,9 @@ func ReleaseConn(db *sql.DB) {
 }
 
 func CloseConn() {
-	for i := 0; i < 10; i++ {
+	cfg := config.GetConfig()
+	max := cfg.GetInt("check.maxReceive")
+	for i := 0; i < max; i++ {
 		db := <-connChan
 		db.Close()
 	}
