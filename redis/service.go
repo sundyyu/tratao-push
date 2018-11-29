@@ -7,28 +7,28 @@ import (
 	"xcurrency-push/util"
 )
 
-var once sync.Once
 var client *redis.Client
 var lock *sync.Mutex = new(sync.Mutex)
+var cliLock *sync.Mutex = new(sync.Mutex)
 
 func GetClient() (*redis.Client, error) {
-
-	// 单例模式
-	once.Do(func() {
-		cfg := config.GetConfig()
-		addr := cfg.GetString("redis.addr")
-		pass := cfg.GetString("redis.password")
-
-		client = redis.NewClient(&redis.Options{
-			Addr:     addr,
-			Password: pass, // password set
-			DB:       0,    // use default DB
-		})
-
-		util.LogInfo("redis client init.")
-	})
-
+	if client == nil {
+		cliLock.Lock()
+		defer cliLock.Unlock()
+		if client == nil {
+			cfg := config.GetConfig()
+			addr := cfg.GetString("redis.addr")
+			pass := cfg.GetString("redis.password")
+			client = redis.NewClient(&redis.Options{
+				Addr:     addr,
+				Password: pass, // password set
+				DB:       0,    // use default DB
+			})
+			util.LogInfo("redis client init.")
+		}
+	}
 	if _, err := client.Ping().Result(); err != nil {
+		client = nil
 		util.LogError(err)
 		return nil, err
 	}

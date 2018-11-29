@@ -1,4 +1,4 @@
-package controller
+package api
 
 import (
 	"github.com/astaxie/beego"
@@ -27,6 +27,7 @@ func (this *AlarmController) AddAlarm() {
 		this.ServeJSON()
 		return
 	}
+
 	alarm.Account = account
 	alarm.BaseCur = gjson.GetBytes(reqBody, "basecur").String()
 	alarm.TargetCur = gjson.GetBytes(reqBody, "targetcur").String()
@@ -195,6 +196,28 @@ func (this *AlarmController) AddPushMsg() {
 		this.ServeJSON()
 		return
 	}
+	list, err := redis.ListAlarm(account)
+	if err != nil {
+		util.LogError(err)
+
+		this.Data["json"] = util.JsonResult(0, nil, err)
+		this.ServeJSON()
+		return
+	}
+	if len(list) == 0 {
+		errInfo := "[alarm_controller.go AddPushMsg] fail,  account not found."
+		util.LogError(errInfo)
+
+		this.Data["json"] = util.JsonResult(0, nil, errInfo)
+		this.ServeJSON()
+		return
+	}
+
+	alarm := list[0]
+	msg.DeviceOS = alarm.DeviceOS
+	msg.DeviceLang = alarm.DeviceLang
+	msg.DeviceCountry = alarm.DeviceCountry
+
 	msg.Account = account
 	msg.DeviceId = gjson.GetBytes(reqBody, "token").String()
 	msg.Title = gjson.GetBytes(reqBody, "title").String()

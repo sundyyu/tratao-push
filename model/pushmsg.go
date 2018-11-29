@@ -5,12 +5,15 @@ import (
 )
 
 type PushMsg struct {
-	Id         int64  `json:"id"`
-	Account    string `json:"account"`
-	DeviceId   string `json:"devid"`
-	Title      string `json:"title"`
-	Body       string `json:"body"`
-	CreateTime int64  `json:"createtime"`
+	Id            int64  `json:"id"`
+	Account       string `json:"account"`
+	DeviceId      string `json:"devid"`
+	DeviceOS      string `json:"devos"`
+	DeviceCountry string `json:"devcountry"`
+	DeviceLang    string `json:"devlang"`
+	Title         string `json:"title"`
+	Body          string `json:"body"`
+	CreateTime    int64  `json:"createtime"`
 }
 
 func GetPushMsgFields() []string {
@@ -18,6 +21,9 @@ func GetPushMsgFields() []string {
 		"Id",
 		"Account",
 		"DeviceId",
+		"DeviceOS",
+		"DeviceCountry",
+		"DeviceLang",
 		"Title",
 		"Body",
 		"CreateTime"}
@@ -37,10 +43,19 @@ func ResultToPushMsg(result []interface{}) PushMsg {
 	if deviceId, ok := result[2].(string); ok {
 		msg.DeviceId = deviceId
 	}
-	if title, ok := result[3].(string); ok {
+	if deviceOS, ok := result[3].(string); ok {
+		msg.DeviceOS = deviceOS
+	}
+	if deviceCountry, ok := result[4].(string); ok {
+		msg.DeviceCountry = deviceCountry
+	}
+	if deviceLang, ok := result[5].(string); ok {
+		msg.DeviceLang = deviceLang
+	}
+	if title, ok := result[6].(string); ok {
 		msg.Title = title
 	}
-	if body, ok := result[4].(string); ok {
+	if body, ok := result[7].(string); ok {
 		msg.Body = body
 	}
 

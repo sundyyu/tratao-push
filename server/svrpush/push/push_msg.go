@@ -40,11 +40,12 @@ func DoPushMsg(msg amqp.Delivery, callChan chan int) {
 	}
 
 	deviceId := pushMsg.DeviceId
-	deviceOS := strings.ToLower("")
-	deviceCountry := ""
+	deviceOS := strings.ToLower(pushMsg.DeviceOS)
+	deviceCountry := strings.ToLower(pushMsg.DeviceCountry)
+	// deviceLang := pushMsg.DeviceLang
+
 	title := pushMsg.Title
 	body := pushMsg.Body
-
 	util.LogInfo("push message: ", pushMsg)
 
 	// 调用推送SDK进行消息推送
@@ -57,7 +58,7 @@ func DoPushMsg(msg amqp.Delivery, callChan chan int) {
 		pushSerice = &xiaomi.PushServiceImpl{}
 	} else if strings.Contains(deviceOS, "ios") {
 		pushSerice = &ios.PushServiceImpl{}
-	} else if strings.Contains(deviceCountry, "CN") { // 中国的其他手机小米推送
+	} else if strings.Contains(deviceCountry, "cn") { // 中国的其他手机小米推送
 		pushSerice = &xiaomi.PushServiceImpl{}
 	} else { // 国外的手机FCM推送
 		pushSerice = &fcm.PushServiceImpl{}

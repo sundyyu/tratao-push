@@ -1,7 +1,7 @@
 node:
-  root: tratao   # 根节点名
+  root: tratao            # 根节点名
   nodeMutex: nodemutex    # 服务器互斥锁节点名
-  nodePart: nodepart      # 服务器分片节点名
+  nodePart: nodepart3      # 服务器分片节点名
 
 zookeeper:
   addrs: 192.168.1.104:2181    # server address list
@@ -21,12 +21,13 @@ rabbitmq:
   password: tratao            # password
 
 check:
-  pipeExecCount: 5000          # pipeline 每次最大查询数量
-  maxSend: 20                  # 最大发送线程数
+  serverName: "CKServer1"   # Check Alarm Server 名称，具有唯一性，其他服务器需要修改为不同名称
+  pipeExecCount: 1000          # pipeline 每次最大查询数量
+  maxSend: 10                  # 最大发送线程数
   maxReceive: 10               # 最大接收线程数
   alarmTickTime: 10            # 预警定时器时间（秒）
   exrateTickTime: 60           # 汇率定时器时间（秒）
-  pushMsgTickTime: 10          # 推送消息定时器时间（秒）
+  pushMsgTickTime: 5           # 推送消息定时器时间（秒）
   pushMsgQueue: "msg_queue"    # 推送队列名称
 
 http:

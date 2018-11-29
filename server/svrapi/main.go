@@ -5,7 +5,7 @@ import (
 	"github.com/astaxie/beego"
 	"os"
 	"xcurrency-push/config"
-	"xcurrency-push/server/svrapi/controller"
+	"xcurrency-push/server/svrapi/api"
 	"xcurrency-push/util"
 )
 
@@ -28,17 +28,16 @@ func main() {
 	// cfg := config.NewConfig("../../config/cfg.yaml")
 	cfg := config.LoadConfig(path)
 	alarmPath := cfg.GetString("http.alarmPath")
-	// pushMsgPath := cfg.GetString("http.pushMsgPath")
 
 	beego.BConfig.Listen.HTTPPort = cfg.GetInt("http.listenAddr")
 	beego.BConfig.CopyRequestBody = true
 
-	beego.Router(alarmPath+"/add", &controller.AlarmController{}, "post:AddAlarm")
-	beego.Router(alarmPath+"/update", &controller.AlarmController{}, "put:UpdateAlarm")
-	beego.Router(alarmPath+"/list/:account", &controller.AlarmController{}, "get:ListAlarm")
-	beego.Router(alarmPath+"/del", &controller.AlarmController{}, "delete:DelAlarm")
-	beego.Router(alarmPath+"/updatedev", &controller.AlarmController{}, "put:UpdateDevice")
+	beego.Router(alarmPath+"/add", &api.AlarmController{}, "post:AddAlarm")
+	beego.Router(alarmPath+"/update", &api.AlarmController{}, "put:UpdateAlarm")
+	beego.Router(alarmPath+"/list/:account", &api.AlarmController{}, "get:ListAlarm")
+	beego.Router(alarmPath+"/del", &api.AlarmController{}, "delete:DelAlarm")
+	beego.Router(alarmPath+"/updatedev", &api.AlarmController{}, "put:UpdateDevice")
 
-	beego.Router(alarmPath+"/push", &controller.AlarmController{}, "post:AddPushMsg")
+	beego.Router(alarmPath+"/push", &api.AlarmController{}, "post:AddPushMsg")
 	beego.Run()
 }

@@ -33,28 +33,32 @@ func GetConn() *zk.Conn {
 	return conn
 }
 
-func CreateNode(conn *zk.Conn, path string, data []byte, flags int32) string {
+func CreateNode(conn *zk.Conn, path string, data []byte, flags int32) (string, error) {
 	exist, _, err := conn.Exists(path)
-	if err != nil || exist {
+	if err != nil {
 		util.LogError(err)
-		return ""
+		return "", err
+	}
+	if exist {
+		byt, _, _ := conn.Get(path)
+		return string(byt), nil
 	}
 
 	nodeId, err := conn.Create(path, data, flags, Acls)
 	if err != nil {
 		util.LogError(err)
-		return ""
+		return "", err
 	}
-	return nodeId
+	return nodeId, nil
 }
 
-func CreateSeqNode(conn *zk.Conn, path string, data []byte) string {
+func CreateSeqNode(conn *zk.Conn, path string, data []byte) (string, error) {
 	nodeId, err := conn.CreateProtectedEphemeralSequential(path, data, Acls)
 	if err != nil {
 		util.LogError(err)
-		return ""
+		return "", err
 	}
-	return nodeId
+	return nodeId, nil
 }
 
 func WatchChildren(zkconn *zk.Conn, path string, ch chan []string) {
@@ -118,20 +122,72 @@ func Acquire(conn *zk.Conn, path string, node string) {
 	rootPath := "/" + path + "/" + node
 	nodeName := node + "-"
 	CreateNode(conn, rootPath, Data, Flags)
-	nid := CreateSeqNode(conn, rootPath+"/"+nodeName, Data)
+	nid, _ := CreateSeqNode(conn, rootPath+"/"+nodeName, Data)
 	ch := make(chan []string, 1)
 	WatchChildren(conn, rootPath, ch)
-	acch := make(chan int, 1)
 	for {
 		child := <-ch
 		c := NodeArr2IntArr(child, nodeName)
 		n := NodeIdToInt(nid, nodeName)
-		util.LogInfo(n, c, child)
+		// util.LogInfo(n, c, child)
 		if n == c[0] {
-			acch <- 1
 			util.LogInfo(node + " get lock and acquire success.")
 			break
 		}
 	}
-	<-acch
+}
+
+func WatchNodePart(conn *zk.Conn, ch chan []string) (string, error) {
+	cfg := config.GetConfig()
+	path := cfg.GetString("node.root")
+	node := cfg.GetString("node.nodePart")
+	return WatchNode(conn, path, node, ch)
+}
+
+func WatchNodePart4Int(conn *zk.Conn, ch chan []int) (int, error) {
+	cfg := config.GetConfig()
+	path := cfg.GetString("node.root")
+	node := cfg.GetString("node.nodePart")
+	return WatchNode4Int(conn, path, node, ch)
+}
+
+// 监控子节点，并返回节点名称
+func WatchNode(conn *zk.Conn, path string, node string, ch chan []string) (string, error) {
+	rootPath := "/" + path + "/" + node
+	nodeName := node + "-"
+	if _, err := CreateNode(conn, rootPath, Data, Flags); err != nil {
+		return "", err
+	}
+	nid, err := CreateSeqNode(conn, rootPath+"/"+nodeName, Data)
+	if err != nil {
+		return "", err
+	}
+	WatchChildren(conn, rootPath, ch)
+	return nid, nil
+}
+
+// 监控子节点，并返回节点对应数字
+func WatchNode4Int(conn *zk.Conn, path string, node string, ich chan []int) (int, error) {
+	rootPath := "/" + path + "/" + node
+	nodeName := node + "-"
+	if _, err := CreateNode(conn, rootPath, Data, Flags); err != nil {
+		return -1, err
+	}
+
+	nid, err := CreateSeqNode(conn, rootPath+"/"+nodeName, Data)
+	if err != nil {
+		return -1, err
+	}
+	n := NodeIdToInt(nid, nodeName)
+	ch := make(chan []string, 1)
+	WatchChildren(conn, rootPath, ch)
+	go func() {
+		for {
+			child := <-ch
+			c := NodeArr2IntArr(child, nodeName)
+			// util.LogInfo(n, c)
+			ich <- c
+		}
+	}()
+	return n, nil
 }
