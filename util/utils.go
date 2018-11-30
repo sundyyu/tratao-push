@@ -72,7 +72,7 @@ func RedisResult2Bool(result interface{}) (bool, error) {
 	return false, errors.New("interface is not string")
 }
 
-func JsonResult(status int, data interface{}, msg interface{}) map[string]interface{} {
+func MapResult(status int, data interface{}, msg interface{}) map[string]interface{} {
 	result := make(map[string]interface{}, 10)
 	result["status"] = status
 	result["data"] = data

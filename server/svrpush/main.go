@@ -4,7 +4,7 @@ import (
 	"flag"
 	"os"
 	"xcurrency-push/config"
-	"xcurrency-push/rabbitmq"
+	"xcurrency-push/module/rabbitmq"
 	"xcurrency-push/server/svrpush/push"
 	"xcurrency-push/util"
 )

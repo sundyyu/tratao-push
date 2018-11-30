@@ -17,7 +17,7 @@ const (
 	ALARM_SERVER   = "alarm:server"
 )
 
-var PartArr []int
+var PartArr []int = []int{0}
 var NextIndex int
 var ServerCount map[string]int64 = map[string]int64{}
 var addLock *sync.Mutex = new(sync.Mutex)
@@ -86,10 +86,9 @@ func NextNodeNum(zkNodeNums []int) int {
 /**
 * @desc 需要加到哪台服务器的索引计算
 *       根据Redis存储的服务器数量，计算每个服务器alarm:ids存储的数量，数量越小，则优先被添加数据
-* @param [servers] Redis中存储的启动过的服务器信息，每启动一台服务器，都会记录一条信息 如（CKServer0，CKServer1）
 * @author 于朝鹏
  */
-func ServerIndex(servers []string) int {
+func ServerIndex() int {
 	indexLock.Lock()
 	defer indexLock.Unlock()
 

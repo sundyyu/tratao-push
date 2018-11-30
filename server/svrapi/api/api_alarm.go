@@ -26,7 +26,7 @@ func (this *AlarmController) AddAlarm() {
 		errInfo := "[alarm_controller.go AddAlarm] fail,  account can not be empty."
 		util.LogError(errInfo)
 
-		this.Data["json"] = util.JsonResult(0, nil, errInfo)
+		this.Data["json"] = util.MapResult(0, nil, errInfo)
 		this.ServeJSON()
 		return
 	}
@@ -44,13 +44,13 @@ func (this *AlarmController) AddAlarm() {
 	if err != nil {
 		util.LogError("[alarm_controller.go AddAlarm] fail, account: ", account, err)
 
-		this.Data["json"] = util.JsonResult(0, nil, err.Error())
+		this.Data["json"] = util.MapResult(0, nil, err.Error())
 		this.ServeJSON()
 		return
 	}
 	util.LogInfo("[alarm_controller.go AddAlarm] success, account: ", account)
 
-	this.Data["json"] = util.JsonResult(1, id, "add alarm success.")
+	this.Data["json"] = util.MapResult(1, id, "add alarm success.")
 	this.ServeJSON()
 }
 
@@ -63,7 +63,7 @@ func (this *AlarmController) UpdateAlarm() {
 	if id <= 0 {
 		util.LogError("[alarm_controller.go UpdateAlarm] fail, id: ", id, "id is empty or error.")
 
-		this.Data["json"] = util.JsonResult(0, nil, "id error. id is empty or error.")
+		this.Data["json"] = util.MapResult(0, nil, "id error. id is empty or error.")
 		this.ServeJSON()
 		return
 	}
@@ -74,7 +74,7 @@ func (this *AlarmController) UpdateAlarm() {
 	// if len(account) == 0 {
 	// 	util.LogError("[alarm_controller.go UpdateAlarm] fail, account: ", account, "account can not be empty.")
 	//
-	// 	this.Data["json"] = util.JsonResult(0, nil, "account error. account can not be empty.")
+	// 	this.Data["json"] = util.MapResult(0, nil, "account error. account can not be empty.")
 	// 	this.ServeJSON()
 	// 	return
 	// }
@@ -91,13 +91,13 @@ func (this *AlarmController) UpdateAlarm() {
 	if err != nil {
 		util.LogError("[alarm_controller.go UpdateAlarm] fail, id: ", id, err)
 
-		this.Data["json"] = util.JsonResult(0, nil, err.Error())
+		this.Data["json"] = util.MapResult(0, nil, err.Error())
 		this.ServeJSON()
 		return
 	}
 	util.LogInfo("[alarm_controller.go UpdateAlarm] success, id: ", id)
 
-	this.Data["json"] = util.JsonResult(1, nil, "update alarm success.")
+	this.Data["json"] = util.MapResult(1, nil, "update alarm success.")
 	this.ServeJSON()
 }
 
@@ -110,7 +110,7 @@ func (this *AlarmController) UpdateDevice() {
 	if len(account) == 0 {
 		util.LogError("[alarm_controller.go UpdateDevice] fail, account: ", account, "account can not be empty.")
 
-		this.Data["json"] = util.JsonResult(0, nil, "account error. Account can not be empty.")
+		this.Data["json"] = util.MapResult(0, nil, "account error. Account can not be empty.")
 		this.ServeJSON()
 		return
 	}
@@ -127,13 +127,13 @@ func (this *AlarmController) UpdateDevice() {
 	if err != nil {
 		util.LogError("[alarm_controller.go UpdateDevice] fail, account: ", account, err)
 
-		this.Data["json"] = util.JsonResult(0, nil, err.Error())
+		this.Data["json"] = util.MapResult(0, nil, err.Error())
 		this.ServeJSON()
 		return
 	}
 	util.LogInfo("[alarm_controller.go UpdateDevice] success, account: ", account)
 
-	this.Data["json"] = util.JsonResult(1, nil, "update device success.")
+	this.Data["json"] = util.MapResult(1, nil, "update device success.")
 	this.ServeJSON()
 }
 
@@ -144,13 +144,13 @@ func (this *AlarmController) ListAlarm() {
 	if err != nil {
 		util.LogError("[alarm_controller.go ListAlarm] fail, account: ", account, err)
 
-		this.Data["json"] = util.JsonResult(0, nil, err.Error())
+		this.Data["json"] = util.MapResult(0, nil, err.Error())
 		this.ServeJSON()
 		return
 	}
 	util.LogInfo("[alarm_controller.go ListAlarm] success, account: ", account)
 
-	this.Data["json"] = util.JsonResult(1, alarms, nil)
+	this.Data["json"] = util.MapResult(1, alarms, nil)
 	this.ServeJSON()
 }
 
@@ -161,7 +161,7 @@ func (this *AlarmController) DelAlarm() {
 	if !idArr.IsArray() {
 		util.LogError("[alarm_controller.go DelAlarm] fail, id: ", idArr, "id is not a array.")
 
-		this.Data["json"] = util.JsonResult(0, nil, "id is not a array.")
+		this.Data["json"] = util.MapResult(0, nil, "id is not a array.")
 		this.ServeJSON()
 		return
 	}
@@ -175,13 +175,13 @@ func (this *AlarmController) DelAlarm() {
 	if err != nil {
 		util.LogError("[alarm_controller.go DelAlarm] fail, id: ", ids, err)
 
-		this.Data["json"] = util.JsonResult(0, nil, err.Error())
+		this.Data["json"] = util.MapResult(0, nil, err.Error())
 		this.ServeJSON()
 		return
 	}
 	util.LogInfo("[alarm_controller.go DelAlarm] success, id: ", ids)
 
-	this.Data["json"] = util.JsonResult(1, nil, "delete alarm success.")
+	this.Data["json"] = util.MapResult(1, nil, "delete alarm success.")
 	this.ServeJSON()
 }
 
@@ -195,7 +195,7 @@ func (this *AlarmController) AddPushMsg() {
 		errInfo := "[alarm_controller.go AddPushMsg] fail,  account can not be empty."
 		util.LogError(errInfo)
 
-		this.Data["json"] = util.JsonResult(0, nil, errInfo)
+		this.Data["json"] = util.MapResult(0, nil, errInfo)
 		this.ServeJSON()
 		return
 	}
@@ -203,7 +203,7 @@ func (this *AlarmController) AddPushMsg() {
 	if err != nil {
 		util.LogError(err)
 
-		this.Data["json"] = util.JsonResult(0, nil, err)
+		this.Data["json"] = util.MapResult(0, nil, err)
 		this.ServeJSON()
 		return
 	}
@@ -211,7 +211,7 @@ func (this *AlarmController) AddPushMsg() {
 		errInfo := "[alarm_controller.go AddPushMsg] fail,  account not found."
 		util.LogError(errInfo)
 
-		this.Data["json"] = util.JsonResult(0, nil, errInfo)
+		this.Data["json"] = util.MapResult(0, nil, errInfo)
 		this.ServeJSON()
 		return
 	}
@@ -231,13 +231,13 @@ func (this *AlarmController) AddPushMsg() {
 	if err != nil {
 		util.LogError("[alarm_controller.go AddPushMsg] fail, account: ", account, err)
 
-		this.Data["json"] = util.JsonResult(0, nil, err.Error())
+		this.Data["json"] = util.MapResult(0, nil, err.Error())
 		this.ServeJSON()
 		return
 	}
 	util.LogInfo("[alarm_controller.go AddPushMsg] success, account: ", account)
 
-	this.Data["json"] = util.JsonResult(1, id, "add push message success.")
+	this.Data["json"] = util.MapResult(1, id, "add push message success.")
 	this.ServeJSON()
 }
 
@@ -261,11 +261,14 @@ func (this *AlarmController) ListPushLog() {
 	pushLogs, err := pgclient.QueryPushMsg(account, page, pageSize)
 	if err != nil {
 		util.LogError("[alarm_controller.go ListPushLog] fail, account: ", account, err)
-		byt, _ := j.Marshal(util.JsonResult(0, nil, err.Error()))
+		byt, _ := j.Marshal(util.MapResult(0, nil, err.Error()))
+		this.Ctx.ResponseWriter.Header().Add("Content-Type", "application/json; charset=utf-8")
 		this.Ctx.WriteString(string(byt))
 		return
 	}
+
 	util.LogInfo("[alarm_controller.go ListPushLog] success, account: ", account)
-	byt, _ := j.Marshal(util.JsonResult(1, pushLogs, nil))
+	byt, _ := j.Marshal(util.MapResult(1, pushLogs, nil))
+	this.Ctx.ResponseWriter.Header().Add("Content-Type", "application/json; charset=utf-8")
 	this.Ctx.WriteString(string(byt))
 }
