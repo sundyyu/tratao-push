@@ -8,7 +8,7 @@ import (
 	"time"
 	"xcurrency-push/config"
 	"xcurrency-push/module/redis"
-	"xcurrency-push/module/zookeeper/zkclient"
+	"xcurrency-push/module/zookeeper"
 	"xcurrency-push/util"
 )
 
