@@ -7,9 +7,9 @@ import (
 	"sync"
 	"time"
 	"xcurrency-push/config"
-	"xcurrency-push/redis"
+	"xcurrency-push/module/redis"
+	"xcurrency-push/module/zookeeper/zkclient"
 	"xcurrency-push/util"
-	"xcurrency-push/zookeeper/zkclient"
 )
 
 const (

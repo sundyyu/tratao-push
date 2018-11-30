@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"xcurrency-push/model"
+	"xcurrency-push/module/pgsql"
 	"xcurrency-push/pushsdk"
 	"xcurrency-push/pushsdk/fcm"
 	"xcurrency-push/pushsdk/huawei"
@@ -49,6 +50,7 @@ func DoPush(msg amqp.Delivery, callChan chan int) {
 	// deviceLang := alarm.DeviceLang
 	deviceCountry := strings.ToLower(alarm.DeviceCountry)
 
+	title := "极简汇率"
 	p := strconv.FormatFloat(price, 'E', -1, 64)
 	body := "您关注的汇率[" + baseCur + "/" + targetCur + "] 当前值为：" + p + "," + " 已达到你设置的预警阈值。"
 	util.LogInfo("push alarm: ", alarm)
@@ -75,10 +77,19 @@ func DoPush(msg amqp.Delivery, callChan chan int) {
 	if len(deviceId) <= 0 {
 		return
 	}
-	if err := pushSerice.DoPush("极简汇率", body, deviceId); err != nil {
+	if err := pushSerice.DoPush(title, body, deviceId); err == nil {
+		pushmsg := model.PushMsg{}
+		pushmsg.Title = title
+		pushmsg.Body = body
+		pushmsg.Account = alarm.Account
+		pushmsg.DeviceId = alarm.DeviceId
+		pushmsg.DeviceOS = alarm.DeviceOS
+		pushmsg.DeviceCountry = alarm.DeviceCountry
+		pushmsg.DeviceLang = alarm.DeviceLang
+		pgclient.InsertPushMsg(pushmsg)
+	} else {
 		util.LogError(err)
 	}
-
 }
 
 // 应答消息

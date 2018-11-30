@@ -39,5 +39,7 @@ func main() {
 	beego.Router(alarmPath+"/updatedev", &api.AlarmController{}, "put:UpdateDevice")
 
 	beego.Router(alarmPath+"/push", &api.AlarmController{}, "post:AddPushMsg")
+	// beego.Router(alarmPath+"/pushlog/add", &api.AlarmController{}, "post:AddPushLog")
+	beego.Router(alarmPath+"/pushlog/:account/:page/:pageSize", &api.AlarmController{}, "get:ListPushLog")
 	beego.Run()
 }

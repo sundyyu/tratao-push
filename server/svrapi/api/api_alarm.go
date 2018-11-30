@@ -2,10 +2,13 @@ package api
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/liamylian/jsontime"
 	"github.com/tidwall/gjson"
+	"strconv"
 	"time"
 	"xcurrency-push/model"
-	"xcurrency-push/redis"
+	"xcurrency-push/module/pgsql"
+	"xcurrency-push/module/redis"
 	"xcurrency-push/util"
 )
 
@@ -222,7 +225,7 @@ func (this *AlarmController) AddPushMsg() {
 	msg.DeviceId = gjson.GetBytes(reqBody, "token").String()
 	msg.Title = gjson.GetBytes(reqBody, "title").String()
 	msg.Body = gjson.GetBytes(reqBody, "body").String()
-	msg.CreateTime = time.Now().Unix()
+	msg.CreateTime = time.Now()
 
 	id, err := redis.AddPushMsg(msg)
 	if err != nil {
@@ -236,4 +239,33 @@ func (this *AlarmController) AddPushMsg() {
 
 	this.Data["json"] = util.JsonResult(1, id, "add push message success.")
 	this.ServeJSON()
+}
+
+func (this *AlarmController) ListPushLog() {
+	account := this.Ctx.Input.Param(":account")
+	p := this.Ctx.Input.Param(":page")
+	psize := this.Ctx.Input.Param(":pageSize")
+
+	page := -1
+	pageSize := -1
+	if len(p) > 0 && len(psize) > 0 {
+		p1, err1 := strconv.Atoi(p)
+		p2, err2 := strconv.Atoi(psize)
+		if err1 == nil && err2 == nil {
+			page = p1
+			pageSize = p2
+		}
+	}
+
+	var j = jsontime.ConfigWithCustomTimeFormat
+	pushLogs, err := pgclient.QueryPushMsg(account, page, pageSize)
+	if err != nil {
+		util.LogError("[alarm_controller.go ListPushLog] fail, account: ", account, err)
+		byt, _ := j.Marshal(util.JsonResult(0, nil, err.Error()))
+		this.Ctx.WriteString(string(byt))
+		return
+	}
+	util.LogInfo("[alarm_controller.go ListPushLog] success, account: ", account)
+	byt, _ := j.Marshal(util.JsonResult(1, pushLogs, nil))
+	this.Ctx.WriteString(string(byt))
 }

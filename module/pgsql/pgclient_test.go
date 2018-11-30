@@ -23,7 +23,7 @@ func TestPgSql(t *testing.T) {
 	pushmsg.CreateTime = time.Now()
 
 	// InsertPushMsg(pushmsg)
-	list, _ := QueryPushMsg()
+	list, _ := QueryPushMsg("test2", 1, 5)
 
 	var json = jsontime.ConfigWithCustomTimeFormat
 	byt, _ := json.Marshal(list)

@@ -8,8 +8,8 @@ import (
 	"time"
 	"xcurrency-push/config"
 	"xcurrency-push/model"
-	"xcurrency-push/rabbitmq"
-	"xcurrency-push/redis"
+	"xcurrency-push/module/rabbitmq"
+	"xcurrency-push/module/redis"
 	"xcurrency-push/util"
 )
 

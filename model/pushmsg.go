@@ -8,10 +8,10 @@ import (
 type PushMsg struct {
 	Id            int64     `json:"id"`
 	Account       string    `json:"account"`
-	DeviceId      string    `json:"devid"`
-	DeviceOS      string    `json:"devos"`
-	DeviceCountry string    `json:"devcountry"`
-	DeviceLang    string    `json:"devlang"`
+	DeviceId      string    `json:"token"`
+	DeviceOS      string    `json:"os"`
+	DeviceCountry string    `json:"country"`
+	DeviceLang    string    `json:"lang"`
 	Title         string    `json:"title"`
 	Body          string    `json:"body"`
 	CreateTime    time.Time `json:"createtime" time_format:"2006-01-02 15:04:05" time_location:"UTC"`

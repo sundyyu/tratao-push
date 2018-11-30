@@ -3,8 +3,8 @@ package check
 import (
 	"github.com/json-iterator/go"
 	"xcurrency-push/config"
-	"xcurrency-push/rabbitmq"
-	"xcurrency-push/redis"
+	"xcurrency-push/module/rabbitmq"
+	"xcurrency-push/module/redis"
 	"xcurrency-push/util"
 )
 
